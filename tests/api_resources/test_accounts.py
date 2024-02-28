@@ -9,7 +9,7 @@ import pytest
 
 from tests.utils import assert_matches_type
 from meorphis_test_22 import MeorphisTest22, AsyncMeorphisTest22
-from meorphis_test_22.types import AccountConfiguration
+from meorphis_test_22.types import AccountUpdateResponse, AccountRetrieveResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -22,7 +22,7 @@ class TestAccounts:
         account = client.accounts.retrieve(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountRetrieveResponse, account, path=["response"])
 
     @parametrize
     def test_raw_response_retrieve(self, client: MeorphisTest22) -> None:
@@ -33,7 +33,7 @@ class TestAccounts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         account = response.parse()
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountRetrieveResponse, account, path=["response"])
 
     @parametrize
     def test_streaming_response_retrieve(self, client: MeorphisTest22) -> None:
@@ -44,7 +44,7 @@ class TestAccounts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             account = response.parse()
-            assert_matches_type(AccountConfiguration, account, path=["response"])
+            assert_matches_type(AccountRetrieveResponse, account, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -60,7 +60,7 @@ class TestAccounts:
         account = client.accounts.update(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
     @parametrize
     def test_method_update_with_all_params(self, client: MeorphisTest22) -> None:
@@ -79,7 +79,7 @@ class TestAccounts:
                 "country": "string",
             },
         )
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
     @parametrize
     def test_raw_response_update(self, client: MeorphisTest22) -> None:
@@ -90,7 +90,7 @@ class TestAccounts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         account = response.parse()
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
     @parametrize
     def test_streaming_response_update(self, client: MeorphisTest22) -> None:
@@ -101,7 +101,7 @@ class TestAccounts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             account = response.parse()
-            assert_matches_type(AccountConfiguration, account, path=["response"])
+            assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -121,7 +121,7 @@ class TestAsyncAccounts:
         account = await async_client.accounts.retrieve(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountRetrieveResponse, account, path=["response"])
 
     @parametrize
     async def test_raw_response_retrieve(self, async_client: AsyncMeorphisTest22) -> None:
@@ -132,7 +132,7 @@ class TestAsyncAccounts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         account = await response.parse()
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountRetrieveResponse, account, path=["response"])
 
     @parametrize
     async def test_streaming_response_retrieve(self, async_client: AsyncMeorphisTest22) -> None:
@@ -143,7 +143,7 @@ class TestAsyncAccounts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             account = await response.parse()
-            assert_matches_type(AccountConfiguration, account, path=["response"])
+            assert_matches_type(AccountRetrieveResponse, account, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -159,7 +159,7 @@ class TestAsyncAccounts:
         account = await async_client.accounts.update(
             "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
         )
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncMeorphisTest22) -> None:
@@ -178,7 +178,7 @@ class TestAsyncAccounts:
                 "country": "string",
             },
         )
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncMeorphisTest22) -> None:
@@ -189,7 +189,7 @@ class TestAsyncAccounts:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         account = await response.parse()
-        assert_matches_type(AccountConfiguration, account, path=["response"])
+        assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncMeorphisTest22) -> None:
@@ -200,7 +200,7 @@ class TestAsyncAccounts:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             account = await response.parse()
-            assert_matches_type(AccountConfiguration, account, path=["response"])
+            assert_matches_type(AccountUpdateResponse, account, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

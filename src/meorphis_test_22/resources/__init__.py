@@ -8,14 +8,6 @@ from .cards import (
     CardsWithStreamingResponse,
     AsyncCardsWithStreamingResponse,
 )
-from .status import (
-    Status,
-    AsyncStatus,
-    StatusWithRawResponse,
-    AsyncStatusWithRawResponse,
-    StatusWithStreamingResponse,
-    AsyncStatusWithStreamingResponse,
-)
 from .accounts import (
     Accounts,
     AsyncAccounts,
@@ -23,6 +15,14 @@ from .accounts import (
     AsyncAccountsWithRawResponse,
     AccountsWithStreamingResponse,
     AsyncAccountsWithStreamingResponse,
+)
+from .statuses import (
+    Statuses,
+    AsyncStatuses,
+    StatusesWithRawResponse,
+    AsyncStatusesWithRawResponse,
+    StatusesWithStreamingResponse,
+    AsyncStatusesWithStreamingResponse,
 )
 
 __all__ = [
@@ -38,10 +38,10 @@ __all__ = [
     "AsyncCardsWithRawResponse",
     "CardsWithStreamingResponse",
     "AsyncCardsWithStreamingResponse",
-    "Status",
-    "AsyncStatus",
-    "StatusWithRawResponse",
-    "AsyncStatusWithRawResponse",
-    "StatusWithStreamingResponse",
-    "AsyncStatusWithStreamingResponse",
+    "Statuses",
+    "AsyncStatuses",
+    "StatusesWithRawResponse",
+    "AsyncStatusesWithRawResponse",
+    "StatusesWithStreamingResponse",
+    "AsyncStatusesWithStreamingResponse",
 ]

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing_extensions import Literal, TypedDict
 
-__all__ = ["CardProvisionParams"]
+__all__ = ["ProvisionPostProvisionParams"]
 
 
-class CardProvisionParams(TypedDict, total=False):
+class ProvisionPostProvisionParams(TypedDict, total=False):
     certificate: str
     """Only applicable if `digital_wallet` is `APPLE_PAY`.
 

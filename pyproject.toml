@@ -5,7 +5,7 @@ description = "The official Python library for the meorphis-test-22 API"
 readme = "README.md"
 license = "Apache-2.0"
 authors = [
-{ name = "Meorphis Test 22", email = "supportte@acme.com" },
+{ name = "Meorphis Test 22", email = "support@acme.com" },
 ]
 dependencies = [
     "httpx>=0.23.0, <1",
@@ -39,8 +39,8 @@ classifiers = [
 
 
 [project.urls]
-Homepage = "https://github.com/stainless-sdks/meorphis-test-22-python"
-Repository = "https://github.com/stainless-sdks/meorphis-test-22-python"
+Homepage = "https://github.com/meorphis/meorphis-test-22-python"
+Repository = "https://github.com/meorphis/meorphis-test-22-python"
 
 
 

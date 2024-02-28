@@ -2,10 +2,10 @@
 
 from typing import Optional
 
-from .._models import BaseModel
+from ..._models import BaseModel
 
-__all__ = ["CardProvisionResponse"]
+__all__ = ["ProvisionPostProvisionResponse"]
 
 
-class CardProvisionResponse(BaseModel):
+class ProvisionPostProvisionResponse(BaseModel):
     provisioning_payload: Optional[str] = None

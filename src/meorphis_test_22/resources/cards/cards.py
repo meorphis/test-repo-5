@@ -7,15 +7,23 @@ from typing_extensions import Literal
 import httpx
 
 from ...types import (
-    Card,
-    CardProvisionResponse,
+    CardCreateResponse,
+    CardUpdateResponse,
+    CardRetrieveResponse,
     card_create_params,
     card_update_params,
-    card_provision_params,
 )
 from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
 from ..._utils import maybe_transform
 from ..._compat import cached_property
+from .provisions import (
+    Provisions,
+    AsyncProvisions,
+    ProvisionsWithRawResponse,
+    AsyncProvisionsWithRawResponse,
+    ProvisionsWithStreamingResponse,
+    AsyncProvisionsWithStreamingResponse,
+)
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
     to_raw_response_wrapper,
@@ -42,6 +50,10 @@ class Cards(SyncAPIResource):
     @cached_property
     def financial_transactions(self) -> FinancialTransactions:
         return FinancialTransactions(self._client)
+
+    @cached_property
+    def provisions(self) -> Provisions:
+        return Provisions(self._client)
 
     @cached_property
     def with_raw_response(self) -> CardsWithRawResponse:
@@ -76,7 +88,7 @@ class Cards(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> Card:
+    ) -> CardCreateResponse:
         """Create a new virtual or physical card.
 
         Parameters `pin`, `shipping_address`, and
@@ -203,7 +215,7 @@ class Cards(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=Card,
+            cast_to=CardCreateResponse,
         )
 
     def retrieve(
@@ -216,7 +228,7 @@ class Cards(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> Card:
+    ) -> CardRetrieveResponse:
         """
         Get card configuration such as spend limit and state.
 
@@ -236,7 +248,7 @@ class Cards(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=Card,
+            cast_to=CardRetrieveResponse,
         )
 
     def update(
@@ -256,7 +268,7 @@ class Cards(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> Card:
+    ) -> CardUpdateResponse:
         """Update the specified properties of the card.
 
         Unsupplied properties will remain
@@ -336,73 +348,7 @@ class Cards(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=Card,
-        )
-
-    def provision(
-        self,
-        card_token: str,
-        *,
-        certificate: str | NotGiven = NOT_GIVEN,
-        digital_wallet: Literal["APPLE_PAY", "GOOGLE_PAY", "SAMSUNG_PAY"] | NotGiven = NOT_GIVEN,
-        nonce: str | NotGiven = NOT_GIVEN,
-        nonce_signature: str | NotGiven = NOT_GIVEN,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> CardProvisionResponse:
-        """
-        Allow your cardholders to directly add payment cards to the device's digital
-        wallet (e.g. Apple Pay) with one touch from your app.
-
-        This requires some additional setup and configuration. Please
-        [Contact Us](https://acme.com/contact) or your Customer Success representative
-        for more information.
-
-        Args:
-          certificate: Only applicable if `digital_wallet` is `APPLE_PAY`. Omit to receive only
-              `activationData` in the response. Apple's public leaf certificate. Base64
-              encoded in PEM format with headers `(-----BEGIN CERTIFICATE-----)` and trailers
-              omitted. Provided by the device's wallet.
-
-          digital_wallet: Name of digital wallet provider.
-
-          nonce: Only applicable if `digital_wallet` is `APPLE_PAY`. Omit to receive only
-              `activationData` in the response. Base64 cryptographic nonce provided by the
-              device's wallet.
-
-          nonce_signature: Only applicable if `digital_wallet` is `APPLE_PAY`. Omit to receive only
-              `activationData` in the response. Base64 cryptographic nonce provided by the
-              device's wallet.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not card_token:
-            raise ValueError(f"Expected a non-empty value for `card_token` but received {card_token!r}")
-        return self._post(
-            f"/cards/{card_token}/provision",
-            body=maybe_transform(
-                {
-                    "certificate": certificate,
-                    "digital_wallet": digital_wallet,
-                    "nonce": nonce,
-                    "nonce_signature": nonce_signature,
-                },
-                card_provision_params.CardProvisionParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=CardProvisionResponse,
+            cast_to=CardUpdateResponse,
         )
 
 
@@ -410,6 +356,10 @@ class AsyncCards(AsyncAPIResource):
     @cached_property
     def financial_transactions(self) -> AsyncFinancialTransactions:
         return AsyncFinancialTransactions(self._client)
+
+    @cached_property
+    def provisions(self) -> AsyncProvisions:
+        return AsyncProvisions(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncCardsWithRawResponse:
@@ -444,7 +394,7 @@ class AsyncCards(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> Card:
+    ) -> CardCreateResponse:
         """Create a new virtual or physical card.
 
         Parameters `pin`, `shipping_address`, and
@@ -571,7 +521,7 @@ class AsyncCards(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=Card,
+            cast_to=CardCreateResponse,
         )
 
     async def retrieve(
@@ -584,7 +534,7 @@ class AsyncCards(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> Card:
+    ) -> CardRetrieveResponse:
         """
         Get card configuration such as spend limit and state.
 
@@ -604,7 +554,7 @@ class AsyncCards(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=Card,
+            cast_to=CardRetrieveResponse,
         )
 
     async def update(
@@ -624,7 +574,7 @@ class AsyncCards(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> Card:
+    ) -> CardUpdateResponse:
         """Update the specified properties of the card.
 
         Unsupplied properties will remain
@@ -704,73 +654,7 @@ class AsyncCards(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=Card,
-        )
-
-    async def provision(
-        self,
-        card_token: str,
-        *,
-        certificate: str | NotGiven = NOT_GIVEN,
-        digital_wallet: Literal["APPLE_PAY", "GOOGLE_PAY", "SAMSUNG_PAY"] | NotGiven = NOT_GIVEN,
-        nonce: str | NotGiven = NOT_GIVEN,
-        nonce_signature: str | NotGiven = NOT_GIVEN,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> CardProvisionResponse:
-        """
-        Allow your cardholders to directly add payment cards to the device's digital
-        wallet (e.g. Apple Pay) with one touch from your app.
-
-        This requires some additional setup and configuration. Please
-        [Contact Us](https://acme.com/contact) or your Customer Success representative
-        for more information.
-
-        Args:
-          certificate: Only applicable if `digital_wallet` is `APPLE_PAY`. Omit to receive only
-              `activationData` in the response. Apple's public leaf certificate. Base64
-              encoded in PEM format with headers `(-----BEGIN CERTIFICATE-----)` and trailers
-              omitted. Provided by the device's wallet.
-
-          digital_wallet: Name of digital wallet provider.
-
-          nonce: Only applicable if `digital_wallet` is `APPLE_PAY`. Omit to receive only
-              `activationData` in the response. Base64 cryptographic nonce provided by the
-              device's wallet.
-
-          nonce_signature: Only applicable if `digital_wallet` is `APPLE_PAY`. Omit to receive only
-              `activationData` in the response. Base64 cryptographic nonce provided by the
-              device's wallet.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not card_token:
-            raise ValueError(f"Expected a non-empty value for `card_token` but received {card_token!r}")
-        return await self._post(
-            f"/cards/{card_token}/provision",
-            body=maybe_transform(
-                {
-                    "certificate": certificate,
-                    "digital_wallet": digital_wallet,
-                    "nonce": nonce,
-                    "nonce_signature": nonce_signature,
-                },
-                card_provision_params.CardProvisionParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=CardProvisionResponse,
+            cast_to=CardUpdateResponse,
         )
 
 
@@ -787,13 +671,14 @@ class CardsWithRawResponse:
         self.update = to_raw_response_wrapper(
             cards.update,
         )
-        self.provision = to_raw_response_wrapper(
-            cards.provision,
-        )
 
     @cached_property
     def financial_transactions(self) -> FinancialTransactionsWithRawResponse:
         return FinancialTransactionsWithRawResponse(self._cards.financial_transactions)
+
+    @cached_property
+    def provisions(self) -> ProvisionsWithRawResponse:
+        return ProvisionsWithRawResponse(self._cards.provisions)
 
 
 class AsyncCardsWithRawResponse:
@@ -809,13 +694,14 @@ class AsyncCardsWithRawResponse:
         self.update = async_to_raw_response_wrapper(
             cards.update,
         )
-        self.provision = async_to_raw_response_wrapper(
-            cards.provision,
-        )
 
     @cached_property
     def financial_transactions(self) -> AsyncFinancialTransactionsWithRawResponse:
         return AsyncFinancialTransactionsWithRawResponse(self._cards.financial_transactions)
+
+    @cached_property
+    def provisions(self) -> AsyncProvisionsWithRawResponse:
+        return AsyncProvisionsWithRawResponse(self._cards.provisions)
 
 
 class CardsWithStreamingResponse:
@@ -831,13 +717,14 @@ class CardsWithStreamingResponse:
         self.update = to_streamed_response_wrapper(
             cards.update,
         )
-        self.provision = to_streamed_response_wrapper(
-            cards.provision,
-        )
 
     @cached_property
     def financial_transactions(self) -> FinancialTransactionsWithStreamingResponse:
         return FinancialTransactionsWithStreamingResponse(self._cards.financial_transactions)
+
+    @cached_property
+    def provisions(self) -> ProvisionsWithStreamingResponse:
+        return ProvisionsWithStreamingResponse(self._cards.provisions)
 
 
 class AsyncCardsWithStreamingResponse:
@@ -853,10 +740,11 @@ class AsyncCardsWithStreamingResponse:
         self.update = async_to_streamed_response_wrapper(
             cards.update,
         )
-        self.provision = async_to_streamed_response_wrapper(
-            cards.provision,
-        )
 
     @cached_property
     def financial_transactions(self) -> AsyncFinancialTransactionsWithStreamingResponse:
         return AsyncFinancialTransactionsWithStreamingResponse(self._cards.financial_transactions)
+
+    @cached_property
+    def provisions(self) -> AsyncProvisionsWithStreamingResponse:
+        return AsyncProvisionsWithStreamingResponse(self._cards.provisions)

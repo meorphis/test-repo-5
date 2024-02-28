@@ -21,45 +21,40 @@ pip install --pre meorphis-test-22
 The full API of this library can be found in [api.md](api.md).
 
 ```python
-import os
 from meorphis_test_22 import MeorphisTest22
 
 client = MeorphisTest22(
-    # This is the default and can be omitted
-    api_key=os.environ.get("MEORPHIS_TEST_22_API_KEY"),
     # defaults to "production".
     environment="environment_1",
+    api_key="My API Key",
 )
 
-status_retrieve_response = client.status.retrieve()
-print(status_retrieve_response.message)
+account_retrieve_response = client.accounts.retrieve(
+    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+)
+print(account_retrieve_response.token)
 ```
-
-While you can provide an `api_key` keyword argument,
-we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `MEORPHIS_TEST_22_API_KEY="My API Key"` to your `.env` file
-so that your API Key is not stored in source control.
 
 ## Async usage
 
 Simply import `AsyncMeorphisTest22` instead of `MeorphisTest22` and use `await` with each API call:
 
 ```python
-import os
 import asyncio
 from meorphis_test_22 import AsyncMeorphisTest22
 
 client = AsyncMeorphisTest22(
-    # This is the default and can be omitted
-    api_key=os.environ.get("MEORPHIS_TEST_22_API_KEY"),
     # defaults to "production".
     environment="environment_1",
+    api_key="My API Key",
 )
 
 
 async def main() -> None:
-    status_retrieve_response = await client.status.retrieve()
-    print(status_retrieve_response.message)
+    account_retrieve_response = await client.accounts.retrieve(
+        "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+    )
+    print(account_retrieve_response.token)
 
 
 asyncio.run(main())
@@ -89,10 +84,14 @@ All errors inherit from `meorphis_test_22.APIError`.
 import meorphis_test_22
 from meorphis_test_22 import MeorphisTest22
 
-client = MeorphisTest22()
+client = MeorphisTest22(
+    api_key="My API Key",
+)
 
 try:
-    client.status.retrieve()
+    client.accounts.retrieve(
+        "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+    )
 except meorphis_test_22.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -132,10 +131,13 @@ from meorphis_test_22 import MeorphisTest22
 client = MeorphisTest22(
     # default is 2
     max_retries=0,
+    api_key="My API Key",
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).status.retrieve()
+client.with_options(max_retries=5).accounts.retrieve(
+    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+)
 ```
 
 ### Timeouts
@@ -150,15 +152,19 @@ from meorphis_test_22 import MeorphisTest22
 client = MeorphisTest22(
     # 20 seconds (default is 1 minute)
     timeout=20.0,
+    api_key="My API Key",
 )
 
 # More granular control:
 client = MeorphisTest22(
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
+    api_key="My API Key",
 )
 
 # Override per-request:
-client.with_options(timeout=5 * 1000).status.retrieve()
+client.with_options(timeout=5 * 1000).accounts.retrieve(
+    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+)
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -196,17 +202,21 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 ```py
 from meorphis_test_22 import MeorphisTest22
 
-client = MeorphisTest22()
-response = client.status.with_raw_response.retrieve()
+client = MeorphisTest22(
+    api_key="My API Key",
+)
+response = client.accounts.with_raw_response.retrieve(
+    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+)
 print(response.headers.get('X-My-Header'))
 
-status = response.parse()  # get the object that `status.retrieve()` would have returned
-print(status.message)
+account = response.parse()  # get the object that `accounts.retrieve()` would have returned
+print(account.token)
 ```
 
-These methods return an [`APIResponse`](https://github.com/stainless-sdks/tree/main/src/meorphis_test_22/_response.py) object.
+These methods return an [`APIResponse`](https://github.com/meorphis/tree/main/src/meorphis_test_22/_response.py) object.
 
-The async client returns an [`AsyncAPIResponse`](https://github.com/stainless-sdks/tree/main/src/meorphis_test_22/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
+The async client returns an [`AsyncAPIResponse`](https://github.com/meorphis/tree/main/src/meorphis_test_22/_response.py) with the same structure, the only difference being `await`able methods for reading the response content.
 
 #### `.with_streaming_response`
 
@@ -215,7 +225,9 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.status.with_streaming_response.retrieve() as response:
+with client.accounts.with_streaming_response.retrieve(
+    "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+) as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():
@@ -243,6 +255,7 @@ client = MeorphisTest22(
         proxies="http://my.test.proxy.example.com",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
     ),
+    api_key="My API Key",
 )
 ```
 
@@ -260,7 +273,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/meorphis-test-22-python/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/meorphis/meorphis-test-22-python/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 

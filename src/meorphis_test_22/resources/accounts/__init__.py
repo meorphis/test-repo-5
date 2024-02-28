@@ -8,22 +8,22 @@ from .accounts import (
     AccountsWithStreamingResponse,
     AsyncAccountsWithStreamingResponse,
 )
-from .credit_configuration import (
-    CreditConfiguration,
-    AsyncCreditConfiguration,
-    CreditConfigurationWithRawResponse,
-    AsyncCreditConfigurationWithRawResponse,
-    CreditConfigurationWithStreamingResponse,
-    AsyncCreditConfigurationWithStreamingResponse,
+from .credit_configurations import (
+    CreditConfigurations,
+    AsyncCreditConfigurations,
+    CreditConfigurationsWithRawResponse,
+    AsyncCreditConfigurationsWithRawResponse,
+    CreditConfigurationsWithStreamingResponse,
+    AsyncCreditConfigurationsWithStreamingResponse,
 )
 
 __all__ = [
-    "CreditConfiguration",
-    "AsyncCreditConfiguration",
-    "CreditConfigurationWithRawResponse",
-    "AsyncCreditConfigurationWithRawResponse",
-    "CreditConfigurationWithStreamingResponse",
-    "AsyncCreditConfigurationWithStreamingResponse",
+    "CreditConfigurations",
+    "AsyncCreditConfigurations",
+    "CreditConfigurationsWithRawResponse",
+    "AsyncCreditConfigurationsWithRawResponse",
+    "CreditConfigurationsWithStreamingResponse",
+    "AsyncCreditConfigurationsWithStreamingResponse",
     "Accounts",
     "AsyncAccounts",
     "AccountsWithRawResponse",

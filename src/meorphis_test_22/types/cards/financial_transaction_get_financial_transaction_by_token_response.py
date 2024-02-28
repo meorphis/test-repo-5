@@ -6,7 +6,7 @@ from typing_extensions import Literal
 
 from ..._models import BaseModel
 
-__all__ = ["FinancialTransaction", "Event"]
+__all__ = ["FinancialTransactionGetFinancialTransactionByTokenResponse", "Event"]
 
 
 class Event(BaseModel):
@@ -92,7 +92,7 @@ class Event(BaseModel):
     """
 
 
-class FinancialTransaction(BaseModel):
+class FinancialTransactionGetFinancialTransactionByTokenResponse(BaseModel):
     token: str
     """Globally unique identifier."""
 
