@@ -3,16 +3,16 @@
 import * as Core from 'meorphis-test-22/core';
 import { APIResource } from 'meorphis-test-22/resource';
 import * as AccountsAPI from 'meorphis-test-22/resources/accounts/accounts';
-import * as CreditConfigurationAPI from 'meorphis-test-22/resources/accounts/credit-configuration';
+import * as CreditConfigurationsAPI from 'meorphis-test-22/resources/accounts/credit-configurations';
 
 export class Accounts extends APIResource {
-  creditConfiguration: CreditConfigurationAPI.CreditConfiguration =
-    new CreditConfigurationAPI.CreditConfiguration(this._client);
+  creditConfigurations: CreditConfigurationsAPI.CreditConfigurations =
+    new CreditConfigurationsAPI.CreditConfigurations(this._client);
 
   /**
    * Get account configuration such as spend limits.
    */
-  retrieve(accountToken: string, options?: Core.RequestOptions): Core.APIPromise<AccountConfiguration> {
+  retrieve(accountToken: string, options?: Core.RequestOptions): Core.APIPromise<AccountRetrieveResponse> {
     return this._client.get(`/accounts/${accountToken}`, options);
   }
 
@@ -27,12 +27,12 @@ export class Accounts extends APIResource {
     accountToken: string,
     body: AccountUpdateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<AccountConfiguration> {
+  ): Core.APIPromise<AccountUpdateResponse> {
     return this._client.patch(`/accounts/${accountToken}`, { body, ...options });
   }
 }
 
-export interface AccountConfiguration {
+export interface AccountRetrieveResponse {
   /**
    * Globally unique identifier for the account. This is the same as the
    * account_token returned by the enroll endpoint. If using this parameter, do not
@@ -47,7 +47,7 @@ export interface AccountConfiguration {
    * time limit (rolling). A lifetime limit of 0 indicates that the lifetime limit
    * feature is disabled.
    */
-  spend_limit: AccountConfiguration.SpendLimit;
+  spend_limit: AccountRetrieveResponse.SpendLimit;
 
   /**
    * Account state:
@@ -60,17 +60,139 @@ export interface AccountConfiguration {
    */
   state: 'ACTIVE' | 'PAUSED' | 'CLOSED';
 
-  account_holder?: AccountConfiguration.AccountHolder;
+  account_holder?: AccountRetrieveResponse.AccountHolder;
 
   /**
    * List of identifiers for the Auth Rule(s) that are applied on the account.
    */
   auth_rule_tokens?: Array<string>;
 
-  verification_address?: AccountConfiguration.VerificationAddress;
+  verification_address?: AccountRetrieveResponse.VerificationAddress;
 }
 
-export namespace AccountConfiguration {
+export namespace AccountRetrieveResponse {
+  /**
+   * Spend limit information for the user containing the daily, monthly, and lifetime
+   * spend limit of the account. Any charges to a card owned by this account will be
+   * declined once their transaction volume has surpassed the value in the applicable
+   * time limit (rolling). A lifetime limit of 0 indicates that the lifetime limit
+   * feature is disabled.
+   */
+  export interface SpendLimit {
+    /**
+     * Daily spend limit (in cents).
+     */
+    daily: number;
+
+    /**
+     * Total spend limit over account lifetime (in cents).
+     */
+    lifetime: number;
+
+    /**
+     * Monthly spend limit (in cents).
+     */
+    monthly: number;
+  }
+
+  export interface AccountHolder {
+    /**
+     * Globally unique identifier for the account holder.
+     */
+    token: string;
+
+    /**
+     * Only applicable for customers using the KYC-Exempt workflow to enroll authorized
+     * users of businesses. Account_token of the enrolled business associated with an
+     * enrolled AUTHORIZED_USER individual.
+     */
+    business_account_token: string;
+
+    /**
+     * Email address.
+     */
+    email: string;
+
+    /**
+     * Phone number of the individual.
+     */
+    phone_number: string;
+  }
+
+  export interface VerificationAddress {
+    /**
+     * Valid deliverable address (no PO boxes).
+     */
+    address1: string;
+
+    /**
+     * City name.
+     */
+    city: string;
+
+    /**
+     * Country name. Only USA is currently supported.
+     */
+    country: string;
+
+    /**
+     * Valid postal code. Only USA ZIP codes are currently supported, entered as a
+     * five-digit ZIP or nine-digit ZIP+4.
+     */
+    postal_code: string;
+
+    /**
+     * Valid state code. Only USA state codes are currently supported, entered in
+     * uppercase ISO 3166-2 two-character format.
+     */
+    state: string;
+
+    /**
+     * Unit or apartment number (if applicable).
+     */
+    address2?: string;
+  }
+}
+
+export interface AccountUpdateResponse {
+  /**
+   * Globally unique identifier for the account. This is the same as the
+   * account_token returned by the enroll endpoint. If using this parameter, do not
+   * include pagination.
+   */
+  token: string;
+
+  /**
+   * Spend limit information for the user containing the daily, monthly, and lifetime
+   * spend limit of the account. Any charges to a card owned by this account will be
+   * declined once their transaction volume has surpassed the value in the applicable
+   * time limit (rolling). A lifetime limit of 0 indicates that the lifetime limit
+   * feature is disabled.
+   */
+  spend_limit: AccountUpdateResponse.SpendLimit;
+
+  /**
+   * Account state:
+   *
+   * - `ACTIVE` - Account is able to transact and create new cards.
+   * - `PAUSED` - Account will not be able to transact or create new cards. It can be
+   *   set back to `ACTIVE`.
+   * - `CLOSED` - Account will permanently not be able to transact or create new
+   *   cards.
+   */
+  state: 'ACTIVE' | 'PAUSED' | 'CLOSED';
+
+  account_holder?: AccountUpdateResponse.AccountHolder;
+
+  /**
+   * List of identifiers for the Auth Rule(s) that are applied on the account.
+   */
+  auth_rule_tokens?: Array<string>;
+
+  verification_address?: AccountUpdateResponse.VerificationAddress;
+}
+
+export namespace AccountUpdateResponse {
   /**
    * Spend limit information for the user containing the daily, monthly, and lifetime
    * spend limit of the account. Any charges to a card owned by this account will be
@@ -211,9 +333,11 @@ export namespace AccountUpdateParams {
 }
 
 export namespace Accounts {
-  export import AccountConfiguration = AccountsAPI.AccountConfiguration;
+  export import AccountRetrieveResponse = AccountsAPI.AccountRetrieveResponse;
+  export import AccountUpdateResponse = AccountsAPI.AccountUpdateResponse;
   export import AccountUpdateParams = AccountsAPI.AccountUpdateParams;
-  export import CreditConfiguration = CreditConfigurationAPI.CreditConfiguration;
-  export import BusinessAccount = CreditConfigurationAPI.BusinessAccount;
-  export import CreditConfigurationUpdateParams = CreditConfigurationAPI.CreditConfigurationUpdateParams;
+  export import CreditConfigurations = CreditConfigurationsAPI.CreditConfigurations;
+  export import CreditConfigurationListResponse = CreditConfigurationsAPI.CreditConfigurationListResponse;
+  export import CreditConfigurationPatchAccountCreditConfigurationResponse = CreditConfigurationsAPI.CreditConfigurationPatchAccountCreditConfigurationResponse;
+  export import CreditConfigurationPatchAccountCreditConfigurationParams = CreditConfigurationsAPI.CreditConfigurationPatchAccountCreditConfigurationParams;
 }
