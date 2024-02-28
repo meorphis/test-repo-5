@@ -20,12 +20,7 @@ from meorphis_test_22 import MeorphisTest22, AsyncMeorphisTest22, APIResponseVal
 from meorphis_test_22._client import MeorphisTest22, AsyncMeorphisTest22
 from meorphis_test_22._models import BaseModel, FinalRequestOptions
 from meorphis_test_22._constants import RAW_RESPONSE_HEADER
-from meorphis_test_22._exceptions import (
-    APIStatusError,
-    APITimeoutError,
-    MeorphisTest22Error,
-    APIResponseValidationError,
-)
+from meorphis_test_22._exceptions import APIStatusError, APITimeoutError, APIResponseValidationError
 from meorphis_test_22._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
@@ -323,15 +318,6 @@ class TestMeorphisTest22:
         request = client2._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "stainless"
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
-
-    def test_validate_headers(self) -> None:
-        client = MeorphisTest22(base_url=base_url, api_key=api_key, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert request.headers.get("Authorization") == api_key
-
-        with pytest.raises(MeorphisTest22Error):
-            client2 = MeorphisTest22(base_url=base_url, api_key=None, _strict_response_validation=True)
-            _ = client2
 
     def test_default_query_option(self) -> None:
         client = MeorphisTest22(
@@ -714,20 +700,30 @@ class TestMeorphisTest22:
     @mock.patch("meorphis_test_22._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/status").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").mock(
+            side_effect=httpx.TimeoutException("Test timeout error")
+        )
 
         with pytest.raises(APITimeoutError):
-            self.client.get("/status", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
+            self.client.get(
+                "/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
+            )
 
         assert _get_open_connections(self.client) == 0
 
     @mock.patch("meorphis_test_22._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/status").mock(return_value=httpx.Response(500))
+        respx_mock.get("/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            self.client.get("/status", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
+            self.client.get(
+                "/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
+            )
 
         assert _get_open_connections(self.client) == 0
 
@@ -1000,15 +996,6 @@ class TestAsyncMeorphisTest22:
         request = client2._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-foo") == "stainless"
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
-
-    def test_validate_headers(self) -> None:
-        client = AsyncMeorphisTest22(base_url=base_url, api_key=api_key, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert request.headers.get("Authorization") == api_key
-
-        with pytest.raises(MeorphisTest22Error):
-            client2 = AsyncMeorphisTest22(base_url=base_url, api_key=None, _strict_response_validation=True)
-            _ = client2
 
     def test_default_query_option(self) -> None:
         client = AsyncMeorphisTest22(
@@ -1395,11 +1382,15 @@ class TestAsyncMeorphisTest22:
     @mock.patch("meorphis_test_22._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/status").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").mock(
+            side_effect=httpx.TimeoutException("Test timeout error")
+        )
 
         with pytest.raises(APITimeoutError):
             await self.client.get(
-                "/status", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
+                "/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
             )
 
         assert _get_open_connections(self.client) == 0
@@ -1407,11 +1398,13 @@ class TestAsyncMeorphisTest22:
     @mock.patch("meorphis_test_22._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/status").mock(return_value=httpx.Response(500))
+        respx_mock.get("/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
             await self.client.get(
-                "/status", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
+                "/accounts/182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
             )
 
         assert _get_open_connections(self.client) == 0
