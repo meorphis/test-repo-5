@@ -6,7 +6,7 @@ from typing_extensions import Literal
 
 import httpx
 
-from ...types import AccountConfiguration, account_update_params
+from ...types import AccountUpdateResponse, AccountRetrieveResponse, account_update_params
 from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
 from ..._utils import maybe_transform
 from ..._compat import cached_property
@@ -20,13 +20,13 @@ from ..._response import (
 from ..._base_client import (
     make_request_options,
 )
-from .credit_configuration import (
-    CreditConfiguration,
-    AsyncCreditConfiguration,
-    CreditConfigurationWithRawResponse,
-    AsyncCreditConfigurationWithRawResponse,
-    CreditConfigurationWithStreamingResponse,
-    AsyncCreditConfigurationWithStreamingResponse,
+from .credit_configurations import (
+    CreditConfigurations,
+    AsyncCreditConfigurations,
+    CreditConfigurationsWithRawResponse,
+    AsyncCreditConfigurationsWithRawResponse,
+    CreditConfigurationsWithStreamingResponse,
+    AsyncCreditConfigurationsWithStreamingResponse,
 )
 
 __all__ = ["Accounts", "AsyncAccounts"]
@@ -34,8 +34,8 @@ __all__ = ["Accounts", "AsyncAccounts"]
 
 class Accounts(SyncAPIResource):
     @cached_property
-    def credit_configuration(self) -> CreditConfiguration:
-        return CreditConfiguration(self._client)
+    def credit_configurations(self) -> CreditConfigurations:
+        return CreditConfigurations(self._client)
 
     @cached_property
     def with_raw_response(self) -> AccountsWithRawResponse:
@@ -55,7 +55,7 @@ class Accounts(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AccountConfiguration:
+    ) -> AccountRetrieveResponse:
         """
         Get account configuration such as spend limits.
 
@@ -75,7 +75,7 @@ class Accounts(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AccountConfiguration,
+            cast_to=AccountRetrieveResponse,
         )
 
     def update(
@@ -93,7 +93,7 @@ class Accounts(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AccountConfiguration:
+    ) -> AccountUpdateResponse:
         """Update account configuration such as spend limits and verification address.
 
         Can
@@ -147,14 +147,14 @@ class Accounts(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AccountConfiguration,
+            cast_to=AccountUpdateResponse,
         )
 
 
 class AsyncAccounts(AsyncAPIResource):
     @cached_property
-    def credit_configuration(self) -> AsyncCreditConfiguration:
-        return AsyncCreditConfiguration(self._client)
+    def credit_configurations(self) -> AsyncCreditConfigurations:
+        return AsyncCreditConfigurations(self._client)
 
     @cached_property
     def with_raw_response(self) -> AsyncAccountsWithRawResponse:
@@ -174,7 +174,7 @@ class AsyncAccounts(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AccountConfiguration:
+    ) -> AccountRetrieveResponse:
         """
         Get account configuration such as spend limits.
 
@@ -194,7 +194,7 @@ class AsyncAccounts(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AccountConfiguration,
+            cast_to=AccountRetrieveResponse,
         )
 
     async def update(
@@ -212,7 +212,7 @@ class AsyncAccounts(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AccountConfiguration:
+    ) -> AccountUpdateResponse:
         """Update account configuration such as spend limits and verification address.
 
         Can
@@ -266,7 +266,7 @@ class AsyncAccounts(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AccountConfiguration,
+            cast_to=AccountUpdateResponse,
         )
 
 
@@ -282,8 +282,8 @@ class AccountsWithRawResponse:
         )
 
     @cached_property
-    def credit_configuration(self) -> CreditConfigurationWithRawResponse:
-        return CreditConfigurationWithRawResponse(self._accounts.credit_configuration)
+    def credit_configurations(self) -> CreditConfigurationsWithRawResponse:
+        return CreditConfigurationsWithRawResponse(self._accounts.credit_configurations)
 
 
 class AsyncAccountsWithRawResponse:
@@ -298,8 +298,8 @@ class AsyncAccountsWithRawResponse:
         )
 
     @cached_property
-    def credit_configuration(self) -> AsyncCreditConfigurationWithRawResponse:
-        return AsyncCreditConfigurationWithRawResponse(self._accounts.credit_configuration)
+    def credit_configurations(self) -> AsyncCreditConfigurationsWithRawResponse:
+        return AsyncCreditConfigurationsWithRawResponse(self._accounts.credit_configurations)
 
 
 class AccountsWithStreamingResponse:
@@ -314,8 +314,8 @@ class AccountsWithStreamingResponse:
         )
 
     @cached_property
-    def credit_configuration(self) -> CreditConfigurationWithStreamingResponse:
-        return CreditConfigurationWithStreamingResponse(self._accounts.credit_configuration)
+    def credit_configurations(self) -> CreditConfigurationsWithStreamingResponse:
+        return CreditConfigurationsWithStreamingResponse(self._accounts.credit_configurations)
 
 
 class AsyncAccountsWithStreamingResponse:
@@ -330,5 +330,5 @@ class AsyncAccountsWithStreamingResponse:
         )
 
     @cached_property
-    def credit_configuration(self) -> AsyncCreditConfigurationWithStreamingResponse:
-        return AsyncCreditConfigurationWithStreamingResponse(self._accounts.credit_configuration)
+    def credit_configurations(self) -> AsyncCreditConfigurationsWithStreamingResponse:
+        return AsyncCreditConfigurationsWithStreamingResponse(self._accounts.credit_configurations)

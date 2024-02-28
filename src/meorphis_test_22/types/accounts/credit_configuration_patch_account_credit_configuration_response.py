@@ -4,7 +4,7 @@ from typing import Optional
 
 from ..._models import BaseModel
 
-__all__ = ["BusinessAccount", "CollectionsConfiguration"]
+__all__ = ["CreditConfigurationPatchAccountCreditConfigurationResponse", "CollectionsConfiguration"]
 
 
 class CollectionsConfiguration(BaseModel):
@@ -18,7 +18,7 @@ class CollectionsConfiguration(BaseModel):
     """The external bank account token to use for auto-collections"""
 
 
-class BusinessAccount(BaseModel):
+class CreditConfigurationPatchAccountCreditConfigurationResponse(BaseModel):
     token: str
     """Account token"""
 
