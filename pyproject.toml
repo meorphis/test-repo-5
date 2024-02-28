@@ -5,7 +5,7 @@ description = "The official Python library for the meorphis-test-22 API"
 readme = "README.md"
 license = "Apache-2.0"
 authors = [
-{ name = "Meorphis Test 22", email = "support@acme.com" },
+{ name = "Meorphis Test 22", email = "supportte@acme.com" },
 ]
 dependencies = [
     "httpx>=0.23.0, <1",
