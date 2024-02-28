@@ -4,7 +4,7 @@ import * as Core from './core';
 import * as Errors from './error';
 import { type Agent } from './_shims/index';
 import * as Uploads from './uploads';
-import * as API from '/resources/index';
+import * as API from 'meorphis-test-22/resources/index';
 
 const environments = {
   production: 'https://api.acme.com/v1',
@@ -141,7 +141,7 @@ export class MeorphisTest22 extends Core.APIClient {
 
   accounts: API.Accounts = new API.Accounts(this);
   cards: API.Cards = new API.Cards(this);
-  statuses: API.Statuses = new API.Statuses(this);
+  status: API.Status = new API.Status(this);
 
   protected override defaultQuery(): Core.DefaultQuery | undefined {
     return this._options.defaultQuery;
@@ -152,6 +152,10 @@ export class MeorphisTest22 extends Core.APIClient {
       ...super.defaultHeaders(opts),
       ...this._options.defaultHeaders,
     };
+  }
+
+  protected override authHeaders(opts: Core.FinalRequestOptions): Core.Headers {
+    return { Authorization: this.apiKey };
   }
 
   static MeorphisTest22 = this;
@@ -198,19 +202,18 @@ export namespace MeorphisTest22 {
   export import RequestOptions = Core.RequestOptions;
 
   export import Accounts = API.Accounts;
-  export import AccountRetrieveResponse = API.AccountRetrieveResponse;
-  export import AccountUpdateResponse = API.AccountUpdateResponse;
+  export import AccountConfiguration = API.AccountConfiguration;
   export import AccountUpdateParams = API.AccountUpdateParams;
 
   export import Cards = API.Cards;
-  export import CardCreateResponse = API.CardCreateResponse;
-  export import CardRetrieveResponse = API.CardRetrieveResponse;
-  export import CardUpdateResponse = API.CardUpdateResponse;
+  export import Card = API.Card;
+  export import CardProvisionResponse = API.CardProvisionResponse;
   export import CardCreateParams = API.CardCreateParams;
   export import CardUpdateParams = API.CardUpdateParams;
+  export import CardProvisionParams = API.CardProvisionParams;
 
-  export import Statuses = API.Statuses;
-  export import StatusGetStatusResponse = API.StatusGetStatusResponse;
+  export import Status = API.Status;
+  export import StatusRetrieveResponse = API.StatusRetrieveResponse;
 }
 
 export default MeorphisTest22;

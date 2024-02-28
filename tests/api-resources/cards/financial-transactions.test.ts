@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-import MeorphisTest22 from '';
+import MeorphisTest22 from 'meorphis-test-22';
 import { Response } from 'node-fetch';
 
 const meorphisTest22 = new MeorphisTest22({
@@ -9,8 +9,8 @@ const meorphisTest22 = new MeorphisTest22({
 });
 
 describe('resource financialTransactions', () => {
-  test('getFinancialTransactionByToken', async () => {
-    const responsePromise = meorphisTest22.cards.financialTransactions.getFinancialTransactionByToken(
+  test('retrieve', async () => {
+    const responsePromise = meorphisTest22.cards.financialTransactions.retrieve(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     );
@@ -23,10 +23,10 @@ describe('resource financialTransactions', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('getFinancialTransactionByToken: request options instead of params are passed correctly', async () => {
+  test('retrieve: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      meorphisTest22.cards.financialTransactions.getFinancialTransactionByToken(
+      meorphisTest22.cards.financialTransactions.retrieve(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         { path: '/_stainless_unknown_path' },

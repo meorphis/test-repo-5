@@ -1,6 +1,6 @@
 # Meorphis Test 22 Node API Library
 
-[![NPM version](https://img.shields.io/npm/v/.svg)](https://npmjs.org/package/)
+[![NPM version](https://img.shields.io/npm/v/meorphis-test-22.svg)](https://npmjs.org/package/meorphis-test-22)
 
 This library provides convenient access to the Meorphis Test 22 REST API from server-side TypeScript or JavaScript.
 
@@ -9,9 +9,9 @@ The REST API documentation can be found [on docs.meorphis-test-22.com](https://d
 ## Installation
 
 ```sh
-npm install --save
+npm install --save meorphis-test-22
 # or
-yarn add
+yarn add meorphis-test-22
 ```
 
 ## Usage
@@ -20,19 +20,17 @@ The full API of this library can be found in [api.md](api.md).
 
 <!-- prettier-ignore -->
 ```js
-import MeorphisTest22 from '';
+import MeorphisTest22 from 'meorphis-test-22';
 
 const meorphisTest22 = new MeorphisTest22({
+  apiKey: process.env['MEORPHIS_TEST_22_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
-  apiKey: 'My API Key',
 });
 
 async function main() {
-  const accountRetrieveResponse = await meorphisTest22.accounts.retrieve(
-    '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-  );
+  const statusRetrieveResponse = await meorphisTest22.status.retrieve();
 
-  console.log(accountRetrieveResponse.token);
+  console.log(statusRetrieveResponse.message);
 }
 
 main();
@@ -44,16 +42,16 @@ This library includes TypeScript definitions for all request params and response
 
 <!-- prettier-ignore -->
 ```ts
-import MeorphisTest22 from '';
+import MeorphisTest22 from 'meorphis-test-22';
 
 const meorphisTest22 = new MeorphisTest22({
+  apiKey: process.env['MEORPHIS_TEST_22_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
-  apiKey: 'My API Key',
 });
 
 async function main() {
-  const accountRetrieveResponse: MeorphisTest22.AccountRetrieveResponse =
-    await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
+  const statusRetrieveResponse: MeorphisTest22.StatusRetrieveResponse =
+    await meorphisTest22.status.retrieve();
 }
 
 main();
@@ -70,17 +68,15 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const accountRetrieveResponse = await meorphisTest22.accounts
-    .retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')
-    .catch((err) => {
-      if (err instanceof MeorphisTest22.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    });
+  const statusRetrieveResponse = await meorphisTest22.status.retrieve().catch((err) => {
+    if (err instanceof MeorphisTest22.APIError) {
+      console.log(err.status); // 400
+      console.log(err.name); // BadRequestError
+      console.log(err.headers); // {server: 'nginx', ...}
+    } else {
+      throw err;
+    }
+  });
 }
 
 main();
@@ -112,11 +108,10 @@ You can use the `maxRetries` option to configure or disable this:
 // Configure the default for all requests:
 const meorphisTest22 = new MeorphisTest22({
   maxRetries: 0, // default is 2
-  apiKey: 'My API Key',
 });
 
 // Or, configure per-request:
-await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+await meorphisTest22.status.retrieve({
   maxRetries: 5,
 });
 ```
@@ -130,11 +125,10 @@ Requests time out after 1 minute by default. You can configure this with a `time
 // Configure the default for all requests:
 const meorphisTest22 = new MeorphisTest22({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
-  apiKey: 'My API Key',
 });
 
 // Override per-request:
-await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+await meorphisTest22.status.retrieve({
   timeout: 5 * 1000,
 });
 ```
@@ -155,15 +149,13 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const meorphisTest22 = new MeorphisTest22();
 
-const response = await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e').asResponse();
+const response = await meorphisTest22.status.retrieve().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: accountRetrieveResponse, response: raw } = await meorphisTest22.accounts
-  .retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')
-  .withResponse();
+const { data: statusRetrieveResponse, response: raw } = await meorphisTest22.status.retrieve().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(accountRetrieveResponse.token);
+console.log(statusRetrieveResponse.message);
 ```
 
 ## Customizing the fetch client
@@ -177,11 +169,11 @@ add the following import before your first import `from "MeorphisTest22"`:
 ```ts
 // Tell TypeScript and the package to use the global web fetch instead of node-fetch.
 // Note, despite the name, this does not add any polyfills, but expects them to be provided if needed.
-import '/shims/web';
-import MeorphisTest22 from '';
+import 'meorphis-test-22/shims/web';
+import MeorphisTest22 from 'meorphis-test-22';
 ```
 
-To do the inverse, add `import "/shims/node"` (which does import polyfills).
+To do the inverse, add `import "meorphis-test-22/shims/node"` (which does import polyfills).
 This can also be useful if you are getting the wrong TypeScript types for `Response` - more details [here](https://github.com/stainless-sdks/tree/main/src/_shims#readme).
 
 You may also provide a custom `fetch` function when instantiating the client,
@@ -189,7 +181,7 @@ which can be used to inspect or alter the `Request` or `Response` before/after e
 
 ```ts
 import { fetch } from 'undici'; // as one example
-import MeorphisTest22 from '';
+import MeorphisTest22 from 'meorphis-test-22';
 
 const client = new MeorphisTest22({
   fetch: async (url: RequestInfo, init?: RequestInfo): Promise<Response> => {
@@ -218,11 +210,10 @@ import HttpsProxyAgent from 'https-proxy-agent';
 // Configure the default for all requests:
 const meorphisTest22 = new MeorphisTest22({
   httpAgent: new HttpsProxyAgent(process.env.PROXY_URL),
-  apiKey: 'My API Key',
 });
 
 // Override per-request:
-await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+await meorphisTest22.status.retrieve({
   baseURL: 'http://localhost:8080/test-api',
   httpAgent: new http.Agent({ keepAlive: false }),
 })
@@ -238,7 +229,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/-node/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/meorphis-test-22-node/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 
@@ -247,7 +238,7 @@ TypeScript >= 4.5 is supported.
 The following runtimes are supported:
 
 - Node.js 18 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
-- Deno v1.28.0 or higher, using `import MeorphisTest22 from "npm:"`.
+- Deno v1.28.0 or higher, using `import MeorphisTest22 from "npm:meorphis-test-22"`.
 - Bun 1.0 or later.
 - Cloudflare Workers.
 - Vercel Edge Runtime.
