@@ -17,21 +17,25 @@ from ..._response import (
 from ..._base_client import (
     make_request_options,
 )
-from ...types.accounts import BusinessAccount, credit_configuration_update_params
+from ...types.accounts import (
+    CreditConfigurationListResponse,
+    CreditConfigurationPatchAccountCreditConfigurationResponse,
+    credit_configuration_patch_account_credit_configuration_params,
+)
 
-__all__ = ["CreditConfiguration", "AsyncCreditConfiguration"]
+__all__ = ["CreditConfigurations", "AsyncCreditConfigurations"]
 
 
-class CreditConfiguration(SyncAPIResource):
+class CreditConfigurations(SyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> CreditConfigurationWithRawResponse:
-        return CreditConfigurationWithRawResponse(self)
+    def with_raw_response(self) -> CreditConfigurationsWithRawResponse:
+        return CreditConfigurationsWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> CreditConfigurationWithStreamingResponse:
-        return CreditConfigurationWithStreamingResponse(self)
+    def with_streaming_response(self) -> CreditConfigurationsWithStreamingResponse:
+        return CreditConfigurationsWithStreamingResponse(self)
 
-    def retrieve(
+    def list(
         self,
         account_token: str,
         *,
@@ -41,7 +45,7 @@ class CreditConfiguration(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> BusinessAccount:
+    ) -> CreditConfigurationListResponse:
         """
         Get an Account's credit configuration
 
@@ -61,10 +65,10 @@ class CreditConfiguration(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=BusinessAccount,
+            cast_to=CreditConfigurationListResponse,
         )
 
-    def update(
+    def patch_account_credit_configuration(
         self,
         account_token: str,
         *,
@@ -78,7 +82,7 @@ class CreditConfiguration(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> BusinessAccount:
+    ) -> CreditConfigurationPatchAccountCreditConfigurationResponse:
         """
         Update a Business Accounts credit configuration
 
@@ -110,25 +114,25 @@ class CreditConfiguration(SyncAPIResource):
                     "external_bank_account_token": external_bank_account_token,
                     "payment_period": payment_period,
                 },
-                credit_configuration_update_params.CreditConfigurationUpdateParams,
+                credit_configuration_patch_account_credit_configuration_params.CreditConfigurationPatchAccountCreditConfigurationParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=BusinessAccount,
+            cast_to=CreditConfigurationPatchAccountCreditConfigurationResponse,
         )
 
 
-class AsyncCreditConfiguration(AsyncAPIResource):
+class AsyncCreditConfigurations(AsyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> AsyncCreditConfigurationWithRawResponse:
-        return AsyncCreditConfigurationWithRawResponse(self)
+    def with_raw_response(self) -> AsyncCreditConfigurationsWithRawResponse:
+        return AsyncCreditConfigurationsWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> AsyncCreditConfigurationWithStreamingResponse:
-        return AsyncCreditConfigurationWithStreamingResponse(self)
+    def with_streaming_response(self) -> AsyncCreditConfigurationsWithStreamingResponse:
+        return AsyncCreditConfigurationsWithStreamingResponse(self)
 
-    async def retrieve(
+    async def list(
         self,
         account_token: str,
         *,
@@ -138,7 +142,7 @@ class AsyncCreditConfiguration(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> BusinessAccount:
+    ) -> CreditConfigurationListResponse:
         """
         Get an Account's credit configuration
 
@@ -158,10 +162,10 @@ class AsyncCreditConfiguration(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=BusinessAccount,
+            cast_to=CreditConfigurationListResponse,
         )
 
-    async def update(
+    async def patch_account_credit_configuration(
         self,
         account_token: str,
         *,
@@ -175,7 +179,7 @@ class AsyncCreditConfiguration(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> BusinessAccount:
+    ) -> CreditConfigurationPatchAccountCreditConfigurationResponse:
         """
         Update a Business Accounts credit configuration
 
@@ -207,58 +211,58 @@ class AsyncCreditConfiguration(AsyncAPIResource):
                     "external_bank_account_token": external_bank_account_token,
                     "payment_period": payment_period,
                 },
-                credit_configuration_update_params.CreditConfigurationUpdateParams,
+                credit_configuration_patch_account_credit_configuration_params.CreditConfigurationPatchAccountCreditConfigurationParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=BusinessAccount,
+            cast_to=CreditConfigurationPatchAccountCreditConfigurationResponse,
         )
 
 
-class CreditConfigurationWithRawResponse:
-    def __init__(self, credit_configuration: CreditConfiguration) -> None:
-        self._credit_configuration = credit_configuration
+class CreditConfigurationsWithRawResponse:
+    def __init__(self, credit_configurations: CreditConfigurations) -> None:
+        self._credit_configurations = credit_configurations
 
-        self.retrieve = to_raw_response_wrapper(
-            credit_configuration.retrieve,
+        self.list = to_raw_response_wrapper(
+            credit_configurations.list,
         )
-        self.update = to_raw_response_wrapper(
-            credit_configuration.update,
-        )
-
-
-class AsyncCreditConfigurationWithRawResponse:
-    def __init__(self, credit_configuration: AsyncCreditConfiguration) -> None:
-        self._credit_configuration = credit_configuration
-
-        self.retrieve = async_to_raw_response_wrapper(
-            credit_configuration.retrieve,
-        )
-        self.update = async_to_raw_response_wrapper(
-            credit_configuration.update,
+        self.patch_account_credit_configuration = to_raw_response_wrapper(
+            credit_configurations.patch_account_credit_configuration,
         )
 
 
-class CreditConfigurationWithStreamingResponse:
-    def __init__(self, credit_configuration: CreditConfiguration) -> None:
-        self._credit_configuration = credit_configuration
+class AsyncCreditConfigurationsWithRawResponse:
+    def __init__(self, credit_configurations: AsyncCreditConfigurations) -> None:
+        self._credit_configurations = credit_configurations
 
-        self.retrieve = to_streamed_response_wrapper(
-            credit_configuration.retrieve,
+        self.list = async_to_raw_response_wrapper(
+            credit_configurations.list,
         )
-        self.update = to_streamed_response_wrapper(
-            credit_configuration.update,
+        self.patch_account_credit_configuration = async_to_raw_response_wrapper(
+            credit_configurations.patch_account_credit_configuration,
         )
 
 
-class AsyncCreditConfigurationWithStreamingResponse:
-    def __init__(self, credit_configuration: AsyncCreditConfiguration) -> None:
-        self._credit_configuration = credit_configuration
+class CreditConfigurationsWithStreamingResponse:
+    def __init__(self, credit_configurations: CreditConfigurations) -> None:
+        self._credit_configurations = credit_configurations
 
-        self.retrieve = async_to_streamed_response_wrapper(
-            credit_configuration.retrieve,
+        self.list = to_streamed_response_wrapper(
+            credit_configurations.list,
         )
-        self.update = async_to_streamed_response_wrapper(
-            credit_configuration.update,
+        self.patch_account_credit_configuration = to_streamed_response_wrapper(
+            credit_configurations.patch_account_credit_configuration,
+        )
+
+
+class AsyncCreditConfigurationsWithStreamingResponse:
+    def __init__(self, credit_configurations: AsyncCreditConfigurations) -> None:
+        self._credit_configurations = credit_configurations
+
+        self.list = async_to_streamed_response_wrapper(
+            credit_configurations.list,
+        )
+        self.patch_account_credit_configuration = async_to_streamed_response_wrapper(
+            credit_configurations.patch_account_credit_configuration,
         )

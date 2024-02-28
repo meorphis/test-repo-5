@@ -5,7 +5,7 @@ from typing_extensions import Literal
 
 from .._models import BaseModel
 
-__all__ = ["AccountConfiguration", "SpendLimit", "AccountHolder", "VerificationAddress"]
+__all__ = ["AccountRetrieveResponse", "SpendLimit", "AccountHolder", "VerificationAddress"]
 
 
 class SpendLimit(BaseModel):
@@ -65,7 +65,7 @@ class VerificationAddress(BaseModel):
     """Unit or apartment number (if applicable)."""
 
 
-class AccountConfiguration(BaseModel):
+class AccountRetrieveResponse(BaseModel):
     token: str
     """Globally unique identifier for the account.
 

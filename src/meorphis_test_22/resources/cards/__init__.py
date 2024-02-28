@@ -8,6 +8,14 @@ from .cards import (
     CardsWithStreamingResponse,
     AsyncCardsWithStreamingResponse,
 )
+from .provisions import (
+    Provisions,
+    AsyncProvisions,
+    ProvisionsWithRawResponse,
+    AsyncProvisionsWithRawResponse,
+    ProvisionsWithStreamingResponse,
+    AsyncProvisionsWithStreamingResponse,
+)
 from .financial_transactions import (
     FinancialTransactions,
     AsyncFinancialTransactions,
@@ -24,6 +32,12 @@ __all__ = [
     "AsyncFinancialTransactionsWithRawResponse",
     "FinancialTransactionsWithStreamingResponse",
     "AsyncFinancialTransactionsWithStreamingResponse",
+    "Provisions",
+    "AsyncProvisions",
+    "ProvisionsWithRawResponse",
+    "AsyncProvisionsWithRawResponse",
+    "ProvisionsWithStreamingResponse",
+    "AsyncProvisionsWithStreamingResponse",
     "Cards",
     "AsyncCards",
     "CardsWithRawResponse",
