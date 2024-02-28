@@ -54,7 +54,7 @@ ENVIRONMENTS: Dict[str, str] = {
 class MeorphisTest22(SyncAPIClient):
     accounts: resources.Accounts
     cards: resources.Cards
-    status: resources.Status
+    statuses: resources.Statuses
     with_raw_response: MeorphisTest22WithRawResponse
     with_streaming_response: MeorphisTest22WithStreamedResponse
 
@@ -136,7 +136,7 @@ class MeorphisTest22(SyncAPIClient):
 
         self.accounts = resources.Accounts(self)
         self.cards = resources.Cards(self)
-        self.status = resources.Status(self)
+        self.statuses = resources.Statuses(self)
         self.with_raw_response = MeorphisTest22WithRawResponse(self)
         self.with_streaming_response = MeorphisTest22WithStreamedResponse(self)
 
@@ -144,12 +144,6 @@ class MeorphisTest22(SyncAPIClient):
     @override
     def qs(self) -> Querystring:
         return Querystring(array_format="comma")
-
-    @property
-    @override
-    def auth_headers(self) -> dict[str, str]:
-        api_key = self.api_key
-        return {"Authorization": api_key}
 
     @property
     @override
@@ -250,7 +244,7 @@ class MeorphisTest22(SyncAPIClient):
 class AsyncMeorphisTest22(AsyncAPIClient):
     accounts: resources.AsyncAccounts
     cards: resources.AsyncCards
-    status: resources.AsyncStatus
+    statuses: resources.AsyncStatuses
     with_raw_response: AsyncMeorphisTest22WithRawResponse
     with_streaming_response: AsyncMeorphisTest22WithStreamedResponse
 
@@ -332,7 +326,7 @@ class AsyncMeorphisTest22(AsyncAPIClient):
 
         self.accounts = resources.AsyncAccounts(self)
         self.cards = resources.AsyncCards(self)
-        self.status = resources.AsyncStatus(self)
+        self.statuses = resources.AsyncStatuses(self)
         self.with_raw_response = AsyncMeorphisTest22WithRawResponse(self)
         self.with_streaming_response = AsyncMeorphisTest22WithStreamedResponse(self)
 
@@ -340,12 +334,6 @@ class AsyncMeorphisTest22(AsyncAPIClient):
     @override
     def qs(self) -> Querystring:
         return Querystring(array_format="comma")
-
-    @property
-    @override
-    def auth_headers(self) -> dict[str, str]:
-        api_key = self.api_key
-        return {"Authorization": api_key}
 
     @property
     @override
@@ -447,28 +435,28 @@ class MeorphisTest22WithRawResponse:
     def __init__(self, client: MeorphisTest22) -> None:
         self.accounts = resources.AccountsWithRawResponse(client.accounts)
         self.cards = resources.CardsWithRawResponse(client.cards)
-        self.status = resources.StatusWithRawResponse(client.status)
+        self.statuses = resources.StatusesWithRawResponse(client.statuses)
 
 
 class AsyncMeorphisTest22WithRawResponse:
     def __init__(self, client: AsyncMeorphisTest22) -> None:
         self.accounts = resources.AsyncAccountsWithRawResponse(client.accounts)
         self.cards = resources.AsyncCardsWithRawResponse(client.cards)
-        self.status = resources.AsyncStatusWithRawResponse(client.status)
+        self.statuses = resources.AsyncStatusesWithRawResponse(client.statuses)
 
 
 class MeorphisTest22WithStreamedResponse:
     def __init__(self, client: MeorphisTest22) -> None:
         self.accounts = resources.AccountsWithStreamingResponse(client.accounts)
         self.cards = resources.CardsWithStreamingResponse(client.cards)
-        self.status = resources.StatusWithStreamingResponse(client.status)
+        self.statuses = resources.StatusesWithStreamingResponse(client.statuses)
 
 
 class AsyncMeorphisTest22WithStreamedResponse:
     def __init__(self, client: AsyncMeorphisTest22) -> None:
         self.accounts = resources.AsyncAccountsWithStreamingResponse(client.accounts)
         self.cards = resources.AsyncCardsWithStreamingResponse(client.cards)
-        self.status = resources.AsyncStatusWithStreamingResponse(client.status)
+        self.statuses = resources.AsyncStatusesWithStreamingResponse(client.statuses)
 
 
 Client = MeorphisTest22

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing_extensions import TypedDict
 
-__all__ = ["CreditConfigurationUpdateParams"]
+__all__ = ["CreditConfigurationPatchAccountCreditConfigurationParams"]
 
 
-class CreditConfigurationUpdateParams(TypedDict, total=False):
+class CreditConfigurationPatchAccountCreditConfigurationParams(TypedDict, total=False):
     billing_period: int
     """Number of days within the billing period"""
 

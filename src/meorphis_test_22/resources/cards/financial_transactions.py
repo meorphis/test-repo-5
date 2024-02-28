@@ -13,7 +13,7 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...types.cards import FinancialTransaction
+from ...types.cards import FinancialTransactionGetFinancialTransactionByTokenResponse
 from ..._base_client import (
     make_request_options,
 )
@@ -30,7 +30,7 @@ class FinancialTransactions(SyncAPIResource):
     def with_streaming_response(self) -> FinancialTransactionsWithStreamingResponse:
         return FinancialTransactionsWithStreamingResponse(self)
 
-    def retrieve(
+    def get_financial_transaction_by_token(
         self,
         financial_transaction_token: str,
         *,
@@ -41,7 +41,7 @@ class FinancialTransactions(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> FinancialTransaction:
+    ) -> FinancialTransactionGetFinancialTransactionByTokenResponse:
         """
         Get the card financial transaction for the provided token.
 
@@ -65,7 +65,7 @@ class FinancialTransactions(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=FinancialTransaction,
+            cast_to=FinancialTransactionGetFinancialTransactionByTokenResponse,
         )
 
 
@@ -78,7 +78,7 @@ class AsyncFinancialTransactions(AsyncAPIResource):
     def with_streaming_response(self) -> AsyncFinancialTransactionsWithStreamingResponse:
         return AsyncFinancialTransactionsWithStreamingResponse(self)
 
-    async def retrieve(
+    async def get_financial_transaction_by_token(
         self,
         financial_transaction_token: str,
         *,
@@ -89,7 +89,7 @@ class AsyncFinancialTransactions(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> FinancialTransaction:
+    ) -> FinancialTransactionGetFinancialTransactionByTokenResponse:
         """
         Get the card financial transaction for the provided token.
 
@@ -113,7 +113,7 @@ class AsyncFinancialTransactions(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=FinancialTransaction,
+            cast_to=FinancialTransactionGetFinancialTransactionByTokenResponse,
         )
 
 
@@ -121,8 +121,8 @@ class FinancialTransactionsWithRawResponse:
     def __init__(self, financial_transactions: FinancialTransactions) -> None:
         self._financial_transactions = financial_transactions
 
-        self.retrieve = to_raw_response_wrapper(
-            financial_transactions.retrieve,
+        self.get_financial_transaction_by_token = to_raw_response_wrapper(
+            financial_transactions.get_financial_transaction_by_token,
         )
 
 
@@ -130,8 +130,8 @@ class AsyncFinancialTransactionsWithRawResponse:
     def __init__(self, financial_transactions: AsyncFinancialTransactions) -> None:
         self._financial_transactions = financial_transactions
 
-        self.retrieve = async_to_raw_response_wrapper(
-            financial_transactions.retrieve,
+        self.get_financial_transaction_by_token = async_to_raw_response_wrapper(
+            financial_transactions.get_financial_transaction_by_token,
         )
 
 
@@ -139,8 +139,8 @@ class FinancialTransactionsWithStreamingResponse:
     def __init__(self, financial_transactions: FinancialTransactions) -> None:
         self._financial_transactions = financial_transactions
 
-        self.retrieve = to_streamed_response_wrapper(
-            financial_transactions.retrieve,
+        self.get_financial_transaction_by_token = to_streamed_response_wrapper(
+            financial_transactions.get_financial_transaction_by_token,
         )
 
 
@@ -148,6 +148,6 @@ class AsyncFinancialTransactionsWithStreamingResponse:
     def __init__(self, financial_transactions: AsyncFinancialTransactions) -> None:
         self._financial_transactions = financial_transactions
 
-        self.retrieve = async_to_streamed_response_wrapper(
-            financial_transactions.retrieve,
+        self.get_financial_transaction_by_token = async_to_streamed_response_wrapper(
+            financial_transactions.get_financial_transaction_by_token,
         )
