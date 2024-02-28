@@ -1,6 +1,6 @@
 {
   "name": "meorphis-test-22",
-  "version": "0.0.1-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "The official TypeScript library for the Meorphis Test 22 API",
   "author": "Meorphis Test 22 <support@acme.com>",
   "types": "dist/index.d.ts",
