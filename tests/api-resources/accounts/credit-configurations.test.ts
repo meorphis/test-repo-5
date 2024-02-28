@@ -8,9 +8,9 @@ const meorphisTest22 = new MeorphisTest22({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource creditConfiguration', () => {
-  test('retrieve', async () => {
-    const responsePromise = meorphisTest22.accounts.creditConfiguration.retrieve(
+describe('resource creditConfigurations', () => {
+  test('list', async () => {
+    const responsePromise = meorphisTest22.accounts.creditConfigurations.list(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     );
     const rawResponse = await responsePromise.asResponse();
@@ -22,17 +22,17 @@ describe('resource creditConfiguration', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('retrieve: request options instead of params are passed correctly', async () => {
+  test('list: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      meorphisTest22.accounts.creditConfiguration.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
+      meorphisTest22.accounts.creditConfigurations.list('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
         path: '/_stainless_unknown_path',
       }),
     ).rejects.toThrow(MeorphisTest22.NotFoundError);
   });
 
-  test('update', async () => {
-    const responsePromise = meorphisTest22.accounts.creditConfiguration.update(
+  test('patchAccountCreditConfiguration', async () => {
+    const responsePromise = meorphisTest22.accounts.creditConfigurations.patchAccountCreditConfiguration(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
     );
     const rawResponse = await responsePromise.asResponse();
@@ -44,19 +44,20 @@ describe('resource creditConfiguration', () => {
     expect(dataAndResponse.response).toBe(rawResponse);
   });
 
-  test('update: request options instead of params are passed correctly', async () => {
+  test('patchAccountCreditConfiguration: request options instead of params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      meorphisTest22.accounts.creditConfiguration.update('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
-        path: '/_stainless_unknown_path',
-      }),
+      meorphisTest22.accounts.creditConfigurations.patchAccountCreditConfiguration(
+        '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        { path: '/_stainless_unknown_path' },
+      ),
     ).rejects.toThrow(MeorphisTest22.NotFoundError);
   });
 
-  test('update: request options and params are passed correctly', async () => {
+  test('patchAccountCreditConfiguration: request options and params are passed correctly', async () => {
     // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
     await expect(
-      meorphisTest22.accounts.creditConfiguration.update(
+      meorphisTest22.accounts.creditConfigurations.patchAccountCreditConfiguration(
         '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
         {
           billing_period: 0,

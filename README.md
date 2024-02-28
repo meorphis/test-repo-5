@@ -23,14 +23,16 @@ The full API of this library can be found in [api.md](api.md).
 import MeorphisTest22 from 'meorphis-test-22';
 
 const meorphisTest22 = new MeorphisTest22({
-  apiKey: process.env['MEORPHIS_TEST_22_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
+  apiKey: 'My API Key',
 });
 
 async function main() {
-  const statusRetrieveResponse = await meorphisTest22.status.retrieve();
+  const accountRetrieveResponse = await meorphisTest22.accounts.retrieve(
+    '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  );
 
-  console.log(statusRetrieveResponse.message);
+  console.log(accountRetrieveResponse.token);
 }
 
 main();
@@ -45,13 +47,13 @@ This library includes TypeScript definitions for all request params and response
 import MeorphisTest22 from 'meorphis-test-22';
 
 const meorphisTest22 = new MeorphisTest22({
-  apiKey: process.env['MEORPHIS_TEST_22_API_KEY'], // This is the default and can be omitted
   environment: 'environment_1', // defaults to 'production'
+  apiKey: 'My API Key',
 });
 
 async function main() {
-  const statusRetrieveResponse: MeorphisTest22.StatusRetrieveResponse =
-    await meorphisTest22.status.retrieve();
+  const accountRetrieveResponse: MeorphisTest22.AccountRetrieveResponse =
+    await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e');
 }
 
 main();
@@ -68,15 +70,17 @@ a subclass of `APIError` will be thrown:
 <!-- prettier-ignore -->
 ```ts
 async function main() {
-  const statusRetrieveResponse = await meorphisTest22.status.retrieve().catch((err) => {
-    if (err instanceof MeorphisTest22.APIError) {
-      console.log(err.status); // 400
-      console.log(err.name); // BadRequestError
-      console.log(err.headers); // {server: 'nginx', ...}
-    } else {
-      throw err;
-    }
-  });
+  const accountRetrieveResponse = await meorphisTest22.accounts
+    .retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')
+    .catch((err) => {
+      if (err instanceof MeorphisTest22.APIError) {
+        console.log(err.status); // 400
+        console.log(err.name); // BadRequestError
+        console.log(err.headers); // {server: 'nginx', ...}
+      } else {
+        throw err;
+      }
+    });
 }
 
 main();
@@ -108,10 +112,11 @@ You can use the `maxRetries` option to configure or disable this:
 // Configure the default for all requests:
 const meorphisTest22 = new MeorphisTest22({
   maxRetries: 0, // default is 2
+  apiKey: 'My API Key',
 });
 
 // Or, configure per-request:
-await meorphisTest22.status.retrieve({
+await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
   maxRetries: 5,
 });
 ```
@@ -125,10 +130,11 @@ Requests time out after 1 minute by default. You can configure this with a `time
 // Configure the default for all requests:
 const meorphisTest22 = new MeorphisTest22({
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
+  apiKey: 'My API Key',
 });
 
 // Override per-request:
-await meorphisTest22.status.retrieve({
+await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
   timeout: 5 * 1000,
 });
 ```
@@ -149,13 +155,15 @@ You can also use the `.withResponse()` method to get the raw `Response` along wi
 ```ts
 const meorphisTest22 = new MeorphisTest22();
 
-const response = await meorphisTest22.status.retrieve().asResponse();
+const response = await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e').asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: statusRetrieveResponse, response: raw } = await meorphisTest22.status.retrieve().withResponse();
+const { data: accountRetrieveResponse, response: raw } = await meorphisTest22.accounts
+  .retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e')
+  .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(statusRetrieveResponse.message);
+console.log(accountRetrieveResponse.token);
 ```
 
 ## Customizing the fetch client
@@ -210,10 +218,11 @@ import HttpsProxyAgent from 'https-proxy-agent';
 // Configure the default for all requests:
 const meorphisTest22 = new MeorphisTest22({
   httpAgent: new HttpsProxyAgent(process.env.PROXY_URL),
+  apiKey: 'My API Key',
 });
 
 // Override per-request:
-await meorphisTest22.status.retrieve({
+await meorphisTest22.accounts.retrieve('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', {
   baseURL: 'http://localhost:8080/test-api',
   httpAgent: new http.Agent({ keepAlive: false }),
 })
